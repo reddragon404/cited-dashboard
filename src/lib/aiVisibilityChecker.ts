@@ -407,7 +407,7 @@ function generateHighlights(chatgpt: VisibilityResult, claude: VisibilityResult,
   
   if (perplexity.score < 50) {
     highlights.push({
-      type: 'visibility-drop',
+      type: 'visibility-drop' as const,
       title: 'Visibility Drop',
       description: 'Your visibility in Perplexity is low',
       value: `${perplexity.score}%`
@@ -416,7 +416,7 @@ function generateHighlights(chatgpt: VisibilityResult, claude: VisibilityResult,
   
   if (chatgpt.visible && claude.visible) {
     highlights.push({
-      type: 'new-competitor',
+      type: 'new-competitor' as const,
       title: 'Strong Performance',
       description: 'You are visible in both ChatGPT and Claude',
       value: '2/3 models'
@@ -426,7 +426,7 @@ function generateHighlights(chatgpt: VisibilityResult, claude: VisibilityResult,
   const totalMentions = chatgpt.mentions + claude.mentions + perplexity.mentions;
   if (totalMentions < 3) {
     highlights.push({
-      type: 'missed-prompt',
+      type: 'missed-prompt' as const,
       title: 'Missed Opportunities',
       description: 'Low mention count across all models',
       value: `${totalMentions} mentions`
