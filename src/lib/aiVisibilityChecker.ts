@@ -365,7 +365,7 @@ function generatePrompts(domain: string, results: VisibilityResult[]): Array<{
     
     prompts.push({
       title,
-      status: visibleIn ? 'visible' : 'not-visible',
+      status: (visibleIn ? 'visible' : 'not-visible') as 'visible' | 'not-visible',
       firstShownIn: visibleIn?.model || 'None',
       dateChecked: today
     });
