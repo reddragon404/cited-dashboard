@@ -22,7 +22,7 @@ export default function PromptList({ prompts }: PromptListProps) {
     <div className="bg-white shadow overflow-hidden sm:rounded-md">
       <div className="px-4 py-5 sm:px-6">
         <h3 className="text-lg leading-6 font-medium text-gray-900">
-          Top 5 prompts where you're included
+            Top 5 prompts where you&apos;re included
         </h3>
         <p className="mt-1 max-w-2xl text-sm text-gray-500">
           Recent prompts that mention your brand

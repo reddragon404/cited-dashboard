@@ -11,7 +11,7 @@ interface ModelVisibilityProps {
 export default function ModelVisibility({ models }: ModelVisibilityProps) {
   return (
     <div className="bg-white p-6 rounded-lg shadow">
-      <h3 className="text-lg font-medium text-gray-900 mb-4">Models you're visible in</h3>
+      <h3 className="text-lg font-medium text-gray-900 mb-4">Models you&apos;re visible in</h3>
       <div className="space-y-4">
         {models.map((model, index) => (
           <div key={index} className="flex items-center justify-between">

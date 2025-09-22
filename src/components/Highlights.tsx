@@ -1,4 +1,4 @@
-import { TrendingUp, TrendingDown, Users, AlertCircle } from 'lucide-react';
+import { TrendingDown, Users, AlertCircle } from 'lucide-react';
 
 interface Highlight {
   type: 'visibility-drop' | 'new-competitor' | 'missed-prompt';
@@ -40,7 +40,7 @@ export default function Highlights({ highlights }: HighlightsProps) {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow">
-      <h3 className="text-lg font-medium text-gray-900 mb-4">This Month's Highlights</h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-4">This Month&apos;s Highlights</h3>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {highlights.map((highlight, index) => (
           <div key={index} className={`p-4 rounded-lg border ${getCardColor(highlight.type)}`}>

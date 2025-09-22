@@ -41,7 +41,7 @@ export async function authenticateUser(email: string, password: string): Promise
     { expiresIn: '24h' }
   );
 
-  const { password: _, ...userWithoutPassword } = user;
+  const { password: _password, ...userWithoutPassword } = user;
   return { user: userWithoutPassword, token };
 }
 
@@ -58,6 +58,6 @@ export function getUserById(userId: string): Omit<User, 'password'> | null {
   const user = users.find(u => u.id === userId);
   if (!user) return null;
   
-  const { password: _, ...userWithoutPassword } = user;
+  const { password: _password, ...userWithoutPassword } = user;
   return userWithoutPassword;
 }

@@ -9,7 +9,12 @@ export const createSupabaseClient = () => {
       signInWithOAuth: async () => ({ error: { message: 'Supabase not configured' } }),
       signOut: async () => ({ error: null })
     }
-  } as any
+  } as {
+    auth: {
+      getUser: () => Promise<{ data: { user: null }; error: null }>;
+      signOut: () => Promise<{ error: null }>;
+    };
+  }
 }
 
 // For client-side usage

@@ -7,10 +7,10 @@ interface User {
   createdAt: string;
 }
 
-interface AuthResponse {
-  user: User;
-  token: string;
-}
+// interface AuthResponse {
+//   user: User;
+//   token: string;
+// }
 
 export async function login(email: string, password: string): Promise<{ success: boolean; user?: User; error?: string }> {
   try {
@@ -29,7 +29,7 @@ export async function login(email: string, password: string): Promise<{ success:
     }
 
     return { success: true, user: data.user };
-  } catch (error) {
+    } catch (_error) {
     return { success: false, error: 'Network error' };
   }
 }
@@ -48,7 +48,7 @@ export async function getCurrentUser(): Promise<{ success: boolean; user?: User;
     }
 
     return { success: true, user: data.user };
-  } catch (error) {
+    } catch (_error) {
     return { success: false, error: 'Network error' };
   }
 }
@@ -67,7 +67,7 @@ export async function logout(): Promise<{ success: boolean; error?: string }> {
     }
 
     return { success: true };
-  } catch (error) {
+    } catch (_error) {
     return { success: false, error: 'Network error' };
   }
 }
@@ -90,7 +90,7 @@ export async function searchDomain(domain: string): Promise<{ success: boolean; 
     }
 
     return { success: true, data };
-  } catch (error) {
+    } catch (_error) {
     return { success: false, error: 'Network error' };
   }
 }

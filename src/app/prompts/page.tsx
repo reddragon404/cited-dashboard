@@ -6,7 +6,7 @@ import Layout from '@/components/Layout';
 import { allPrompts } from '@/lib/dummyData';
 
 export default function PromptsPage() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<{ id: string; email: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 

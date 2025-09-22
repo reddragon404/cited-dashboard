@@ -6,7 +6,7 @@ import Layout from '@/components/Layout';
 import { Lock, FileText, TrendingUp, Target, Zap } from 'lucide-react';
 
 export default function ReportsPage() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<{ id: string; email: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -69,7 +69,7 @@ export default function ReportsPage() {
                   <div className="border-l-4 border-yellow-400 pl-4">
                     <h4 className="text-sm font-medium text-gray-900">Competitor Analysis</h4>
                     <p className="text-sm text-gray-600 mt-1">
-                      Identify gaps in your competitor's AI visibility and capitalize...
+                      Identify gaps in your competitor&apos;s AI visibility and capitalize...
                     </p>
                   </div>
                 </div>
@@ -161,7 +161,7 @@ export default function ReportsPage() {
             <div className="border-l-4 border-blue-400 pl-4">
               <h4 className="text-sm font-medium text-gray-900">Quick Win</h4>
               <p className="text-sm text-gray-600 mt-1">
-                Your visibility in ChatGPT is strong (85%), but you're missing opportunities in Perplexity.
+                      Your visibility in ChatGPT is strong (85%), but you&apos;re missing opportunities in Perplexity.
               </p>
             </div>
             <div className="border-l-4 border-green-400 pl-4">
