@@ -346,7 +346,12 @@ function generatePrompts(domain: string, results: VisibilityResult[]): Array<{
   firstShownIn: string;
   dateChecked: string;
 }> {
-  const prompts = [];
+  const prompts: Array<{
+    title: string;
+    status: 'visible' | 'not-visible';
+    firstShownIn: string;
+    dateChecked: string;
+  }> = [];
   const today = new Date().toISOString().split('T')[0];
   
   for (const template of TEST_PROMPTS.slice(0, 5)) {
