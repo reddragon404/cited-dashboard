@@ -20,7 +20,7 @@ import {
 export default function Dashboard() {
   const [user, setUser] = useState<{ id: string; email: string } | null>(null);
   const [loading, setLoading] = useState(true);
-  const [searchData, setSearchData] = useState<{ score: number; models: any; prompts: any[]; competitors: any[]; highlights: any[] } | null>(null);
+  const [searchData, setSearchData] = useState<{ overallScore: number; models: any; prompts: any[]; competitors: any[]; highlights: any[] } | null>(null);
   const [searchedDomain, setSearchedDomain] = useState<string>('');
   const router = useRouter();
 
