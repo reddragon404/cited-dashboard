@@ -398,7 +398,12 @@ function generateHighlights(chatgpt: VisibilityResult, claude: VisibilityResult,
   description: string;
   value: string;
 }> {
-  const highlights = [];
+  const highlights: Array<{
+    type: 'visibility-drop' | 'new-competitor' | 'missed-prompt';
+    title: string;
+    description: string;
+    value: string;
+  }> = [];
   
   if (perplexity.score < 50) {
     highlights.push({
