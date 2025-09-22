@@ -433,5 +433,10 @@ function generateHighlights(chatgpt: VisibilityResult, claude: VisibilityResult,
     });
   }
   
-  return highlights;
+  return highlights as Array<{
+    type: 'visibility-drop' | 'new-competitor' | 'missed-prompt';
+    title: string;
+    description: string;
+    value: string;
+  }>;
 }
