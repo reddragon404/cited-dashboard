@@ -36,7 +36,7 @@ export default function ScoreCard({ score, title, subtitle, trend, trendValue }:
   };
 
   return (
-    <div className="bg-white overflow-hidden shadow rounded-lg">
+    <div className="bg-gray-800 overflow-hidden shadow rounded-lg">
       <div className="p-5">
         <div className="flex items-center">
           <div className="flex-shrink-0">
@@ -46,11 +46,11 @@ export default function ScoreCard({ score, title, subtitle, trend, trendValue }:
           </div>
           <div className="ml-5 w-0 flex-1">
             <dl>
-              <dt className="text-sm font-medium text-gray-500 truncate">
+              <dt className="text-sm font-medium text-gray-400 truncate">
                 {title}
               </dt>
               {subtitle && (
-                <dd className="text-lg font-medium text-gray-900">
+                <dd className="text-lg font-medium text-white">
                   {subtitle}
                 </dd>
               )}
@@ -63,7 +63,7 @@ export default function ScoreCard({ score, title, subtitle, trend, trendValue }:
               <span className={`font-medium ${getTrendColor(trend)}`}>
                 {getTrendIcon(trend)} {trendValue}%
               </span>
-              <span className="ml-2 text-gray-500">vs last month</span>
+              <span className="ml-2 text-gray-400">vs last month</span>
             </div>
           </div>
         )}

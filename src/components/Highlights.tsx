@@ -28,19 +28,19 @@ export default function Highlights({ highlights }: HighlightsProps) {
   const getCardColor = (type: string) => {
     switch (type) {
       case 'visibility-drop':
-        return 'border-red-200 bg-red-50';
+        return 'border-red-500 bg-red-900/20';
       case 'new-competitor':
-        return 'border-blue-200 bg-blue-50';
+        return 'border-blue-500 bg-blue-900/20';
       case 'missed-prompt':
-        return 'border-yellow-200 bg-yellow-50';
+        return 'border-yellow-500 bg-yellow-900/20';
       default:
-        return 'border-gray-200 bg-gray-50';
+        return 'border-gray-500 bg-gray-800';
     }
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">This Month&apos;s Highlights</h3>
+    <div className="bg-gray-800 p-6 rounded-lg shadow">
+        <h3 className="text-lg font-medium text-white mb-4">This Month&apos;s Highlights</h3>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {highlights.map((highlight, index) => (
           <div key={index} className={`p-4 rounded-lg border ${getCardColor(highlight.type)}`}>
@@ -49,14 +49,14 @@ export default function Highlights({ highlights }: HighlightsProps) {
                 {getIcon(highlight.type)}
               </div>
               <div className="ml-3">
-                <h4 className="text-sm font-medium text-gray-900">
+                <h4 className="text-sm font-medium text-white">
                   {highlight.title}
                 </h4>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-sm text-gray-400 mt-1">
                   {highlight.description}
                 </p>
                 {highlight.value && (
-                  <p className="text-lg font-semibold text-gray-900 mt-2">
+                  <p className="text-lg font-semibold text-white mt-2">
                     {highlight.value}
                   </p>
                 )}

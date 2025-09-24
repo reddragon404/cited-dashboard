@@ -8,6 +8,8 @@ import { Lock, FileText, TrendingUp, Target, Zap } from 'lucide-react';
 export default function ReportsPage() {
   const [user, setUser] = useState<{ id: string; email: string } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [searchData, setSearchData] = useState<any>(null);
+  const [searchedDomain, setSearchedDomain] = useState<string>('');
   const router = useRouter();
 
   useEffect(() => {
@@ -23,12 +25,24 @@ export default function ReportsPage() {
     getUser();
   }, [router]);
 
+  useEffect(() => {
+    // Check for search results in localStorage
+    const storedResults = localStorage.getItem('searchResults');
+    const storedDomain = localStorage.getItem('searchedDomain');
+    
+    if (storedResults && storedDomain) {
+      try {
+        const parsedData = JSON.parse(storedResults);
+        setSearchData(parsedData);
+        setSearchedDomain(storedDomain);
+      } catch (error) {
+        console.error('Error parsing search results:', error);
+      }
+    }
+  }, []);
+
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-500"></div>
-      </div>
-    );
+    return null; // Remove loading spinner
   }
 
   return (
@@ -36,142 +50,136 @@ export default function ReportsPage() {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Reports</h1>
-          <p className="mt-1 text-sm text-gray-500">
-            Detailed improvement plans and optimization strategies
+          <h1 className="text-2xl font-bold text-white">Reports</h1>
+          <p className="mt-1 text-sm text-gray-400">
+            {searchedDomain ? `Detailed improvement plans for ${searchedDomain}` : 'Detailed improvement plans and optimization strategies'}
           </p>
         </div>
 
-        {/* Locked Content */}
-        <div className="relative">
-          {/* Blurred Background */}
-          <div className="filter blur-sm">
+        {/* Show search prompt if no data */}
+        {!searchData && (
+          <div className="bg-gray-800 rounded-lg p-8 text-center">
+            <h2 className="text-xl font-semibold text-white mb-4">No Search Data Available</h2>
+            <p className="text-gray-400 mb-6">Use the search bar above to analyze a domain's AI visibility</p>
+            <div className="text-sm text-gray-500">
+              <p>• Enter any domain (e.g., stripe.com, openai.com)</p>
+              <p>• Get real AI visibility scores from ChatGPT, Gemini, and Perplexity</p>
+              <p>• View detailed analysis and competitor insights</p>
+            </div>
+          </div>
+        )}
+
+        {/* Only show data if we have search results */}
+        {searchData && (
+          <>
+
+            {/* Real Data Analysis */}
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-              {/* Optimization Plan Card */}
-              <div className="bg-white p-6 rounded-lg shadow">
+              {/* Current Performance Card */}
+              <div className="bg-gray-800 p-6 rounded-lg shadow">
                 <div className="flex items-center mb-4">
-                  <FileText className="h-6 w-6 text-blue-500 mr-3" />
-                  <h3 className="text-lg font-medium text-gray-900">Optimization Plan</h3>
+                  <TrendingUp className="h-6 w-6 text-green-500 mr-3" />
+                  <h3 className="text-lg font-medium text-white">Current Performance</h3>
                 </div>
                 <div className="space-y-4">
-                  <div className="border-l-4 border-blue-400 pl-4">
-                    <h4 className="text-sm font-medium text-gray-900">Content Strategy</h4>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Focus on creating content that addresses common AI prompts in your industry...
-                    </p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-400">Overall Visibility Score</span>
+                    <span className="text-lg font-semibold text-white">{searchData.overallScore}/100</span>
                   </div>
-                  <div className="border-l-4 border-green-400 pl-4">
-                    <h4 className="text-sm font-medium text-gray-900">Technical SEO</h4>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Optimize your website structure and metadata for better AI crawling...
-                    </p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-400">ChatGPT Visibility</span>
+                    <span className="text-lg font-semibold text-green-500">{searchData.models?.chatgpt?.score || 0}%</span>
                   </div>
-                  <div className="border-l-4 border-yellow-400 pl-4">
-                    <h4 className="text-sm font-medium text-gray-900">Competitor Analysis</h4>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Identify gaps in your competitor&apos;s AI visibility and capitalize...
-                    </p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-400">Gemini Visibility</span>
+                    <span className="text-lg font-semibold text-blue-500">{searchData.models?.claude?.score || 0}%</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-400">Perplexity Visibility</span>
+                    <span className="text-lg font-semibold text-purple-500">{searchData.models?.perplexity?.score || 0}%</span>
                   </div>
                 </div>
               </div>
 
-              {/* Performance Metrics Card */}
-              <div className="bg-white p-6 rounded-lg shadow">
+              {/* Key Insights Card */}
+              <div className="bg-gray-800 p-6 rounded-lg shadow">
                 <div className="flex items-center mb-4">
-                  <TrendingUp className="h-6 w-6 text-green-500 mr-3" />
-                  <h3 className="text-lg font-medium text-gray-900">Performance Metrics</h3>
+                  <FileText className="h-6 w-6 text-blue-500 mr-3" />
+                  <h3 className="text-lg font-medium text-white">Key Insights</h3>
                 </div>
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Current Visibility Score</span>
-                    <span className="text-lg font-semibold text-gray-900">85/100</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Projected Score (3 months)</span>
-                    <span className="text-lg font-semibold text-green-600">92/100</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Potential Improvement</span>
-                    <span className="text-lg font-semibold text-blue-600">+7 points</span>
-                  </div>
+                  {searchData.highlights?.slice(0, 3).map((highlight: any, index: number) => (
+                    <div key={index} className="border-l-4 border-green-400 pl-4">
+                      <h4 className="text-sm font-medium text-white">{highlight.title}</h4>
+                      <p className="text-sm text-gray-400 mt-1">{highlight.description}</p>
+                      <div className="text-xs text-green-400 mt-1">{highlight.value}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Competitor Analysis Card */}
+              <div className="bg-gray-800 p-6 rounded-lg shadow">
+                <div className="flex items-center mb-4">
+                  <Target className="h-6 w-6 text-purple-500 mr-3" />
+                  <h3 className="text-lg font-medium text-white">Competitor Analysis</h3>
+                </div>
+                <div className="space-y-3">
+                  {searchData.competitors?.slice(0, 3).map((competitor: any, index: number) => (
+                    <div key={index} className="flex items-center justify-between">
+                      <span className="text-sm text-gray-400">{competitor.competitor}</span>
+                      <div className="flex gap-2">
+                        <span className={`text-xs px-2 py-1 rounded ${competitor.chatgpt?.visible ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
+                          ChatGPT
+                        </span>
+                        <span className={`text-xs px-2 py-1 rounded ${competitor.claude?.visible ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
+                          Gemini
+                        </span>
+                        <span className={`text-xs px-2 py-1 rounded ${competitor.perplexity?.visible ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
+                          Perplexity
+                        </span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
               {/* Action Items Card */}
-              <div className="bg-white p-6 rounded-lg shadow">
+              <div className="bg-gray-800 p-6 rounded-lg shadow">
                 <div className="flex items-center mb-4">
-                  <Target className="h-6 w-6 text-purple-500 mr-3" />
-                  <h3 className="text-lg font-medium text-gray-900">Action Items</h3>
+                  <Zap className="h-6 w-6 text-yellow-500 mr-3" />
+                  <h3 className="text-lg font-medium text-white">Recommended Actions</h3>
                 </div>
                 <div className="space-y-3">
                   <div className="flex items-center">
                     <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
-                    <span className="text-sm text-gray-600">Update meta descriptions for 15 key pages</span>
+                    <span className="text-sm text-gray-400">Improve visibility in underperforming models</span>
                   </div>
                   <div className="flex items-center">
                     <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-                    <span className="text-sm text-gray-600">Create 5 new blog posts targeting AI prompts</span>
+                    <span className="text-sm text-gray-400">Create content targeting high-value prompts</span>
                   </div>
                   <div className="flex items-center">
                     <div className="w-2 h-2 bg-yellow-500 rounded-full mr-3"></div>
-                    <span className="text-sm text-gray-600">Optimize homepage for "best [industry] tools" queries</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* ROI Projection Card */}
-              <div className="bg-white p-6 rounded-lg shadow">
-                <div className="flex items-center mb-4">
-                  <Zap className="h-6 w-6 text-yellow-500 mr-3" />
-                  <h3 className="text-lg font-medium text-gray-900">ROI Projection</h3>
-                </div>
-                <div className="space-y-4">
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-green-600">+47%</div>
-                    <div className="text-sm text-gray-600">Expected visibility increase</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-blue-600">+23%</div>
-                    <div className="text-sm text-gray-600">Projected traffic growth</div>
+                    <span className="text-sm text-gray-400">Monitor competitor performance regularly</span>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Lock Overlay */}
-          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 rounded-lg">
-            <div className="bg-white p-8 rounded-lg shadow-xl text-center max-w-md">
-              <Lock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">Reports Locked</h3>
-              <p className="text-sm text-gray-600 mb-6">
-                Detailed improvement plans and optimization strategies are available with a premium subscription.
+            {/* Premium Upgrade CTA */}
+            <div className="bg-gradient-to-r from-green-600 to-blue-600 p-8 rounded-lg text-center">
+              <Lock className="h-12 w-12 text-white mx-auto mb-4" />
+              <h3 className="text-2xl font-bold text-white mb-2">Unlock Detailed Reports</h3>
+              <p className="text-green-100 mb-6 max-w-2xl mx-auto">
+                Get comprehensive optimization plans, competitor analysis, and actionable insights to boost your AI visibility.
               </p>
-              <button className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200">
+              <button className="bg-white text-green-600 font-semibold px-8 py-3 rounded-lg hover:bg-gray-100 transition-colors duration-200">
                 Request Optimization Plan
               </button>
             </div>
-          </div>
-        </div>
-
-        {/* Free Insights */}
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Free Insights</h3>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div className="border-l-4 border-blue-400 pl-4">
-              <h4 className="text-sm font-medium text-gray-900">Quick Win</h4>
-              <p className="text-sm text-gray-600 mt-1">
-                      Your visibility in ChatGPT is strong (85%), but you&apos;re missing opportunities in Perplexity.
-              </p>
-            </div>
-            <div className="border-l-4 border-green-400 pl-4">
-              <h4 className="text-sm font-medium text-gray-900">Opportunity</h4>
-              <p className="text-sm text-gray-600 mt-1">
-                Competitor A is gaining ground. Focus on "productivity tools" keywords to maintain your lead.
-              </p>
-            </div>
-          </div>
-        </div>
+          </>
+        )}
       </div>
     </Layout>
   );

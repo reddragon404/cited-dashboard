@@ -11,21 +11,21 @@ interface TrendGraphProps {
 
 export default function TrendGraph({ data, title }: TrendGraphProps) {
   return (
-    <div className="bg-white p-6 rounded-lg shadow">
-      <h3 className="text-lg font-medium text-gray-900 mb-4">{title}</h3>
+    <div className="bg-gray-800 p-6 rounded-lg shadow">
+      <h3 className="text-lg font-medium text-white mb-4">{title}</h3>
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
             <XAxis 
               dataKey="month" 
-              tick={{ fontSize: 12 }}
+              tick={{ fontSize: 12, fill: '#9ca3af' }}
               axisLine={false}
               tickLine={false}
             />
             <YAxis 
               domain={[0, 100]}
-              tick={{ fontSize: 12 }}
+              tick={{ fontSize: 12, fill: '#9ca3af' }}
               axisLine={false}
               tickLine={false}
             />

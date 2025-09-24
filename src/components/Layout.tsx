@@ -80,7 +80,7 @@ export default function Layout({ children }: LayoutProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-900">
       {/* Mobile sidebar */}
       <div className={`fixed inset-0 z-50 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
@@ -149,10 +149,10 @@ export default function Layout({ children }: LayoutProps) {
       {/* Main content */}
       <div className="lg:pl-64">
         {/* Top navigation */}
-        <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
+        <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-700 bg-gray-800 px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
           <button
             type="button"
-            className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
+            className="-m-2.5 p-2.5 text-gray-300 lg:hidden"
             onClick={() => setSidebarOpen(true)}
           >
             <Menu className="h-6 w-6" />
@@ -175,27 +175,27 @@ export default function Layout({ children }: LayoutProps) {
                     value={domain}
                     onChange={(e) => setDomain(e.target.value)}
                     disabled={searching}
-                    className="block w-full rounded-md border-0 py-1.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6 disabled:opacity-50"
+                    className="block w-full rounded-md border-0 py-1.5 pl-10 pr-3 text-white bg-gray-700 ring-1 ring-inset ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6 disabled:opacity-50"
                   />
                 </div>
                 {searching && (
-                  <div className="mt-1 text-sm text-blue-600">
+                  <div className="mt-1 text-sm text-blue-400">
                     Analyzing AI visibility... This may take 30-60 seconds
                   </div>
                 )}
                 {searchError && (
-                  <div className="mt-1 text-sm text-red-600">{searchError}</div>
+                  <div className="mt-1 text-sm text-red-400">{searchError}</div>
                 )}
               </div>
             </form>
             <div className="flex items-center gap-x-4 lg:gap-x-6">
               <div className="flex items-center gap-x-2">
-                <span className="text-sm text-gray-700">
+                <span className="text-sm text-gray-300">
                   {user?.email || 'Loading...'}
                 </span>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-x-2 text-sm text-gray-700 hover:text-gray-900"
+                  className="flex items-center gap-x-2 text-sm text-gray-300 hover:text-white"
                 >
                   <LogOut className="h-4 w-4" />
                   Logout
