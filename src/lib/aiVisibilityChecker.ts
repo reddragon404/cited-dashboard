@@ -382,19 +382,27 @@ function generatePrompts(domain: string, results: VisibilityResult[]): Array<{
   }> = [];
   const today = new Date().toISOString().split('T')[0];
   
-  for (const template of TEST_PROMPTS.slice(0, 5)) {
-    const useCase = template.use_cases[0];
-    const title = template.prompt
-      .replace('{category}', template.category)
-      .replace('{use_case}', useCase);
+  // Generate prompts based on actual test prompts used
+  const testPrompts = generateTestPrompts(domain);
+  
+  for (let i = 0; i < Math.min(5, testPrompts.length); i++) {
+    const testPrompt = testPrompts[i];
     
-    // Check if domain was found in any model
-    const visibleIn = results.find(r => r.visible);
+    // Check which models found the domain for this specific prompt
+    const visibleModels = results.filter(r => r.visible && r.context.some(ctx => 
+      ctx.toLowerCase().includes(domain.toLowerCase())
+    ));
+    
+    const isVisible = visibleModels.length > 0;
+    const firstShownIn = visibleModels.length > 0 ? visibleModels[0].model : 'None';
+    
+    // Create a more readable title from the test prompt
+    const title = testPrompt.length > 80 ? testPrompt.substring(0, 80) + '...' : testPrompt;
     
     prompts.push({
       title,
-      status: (visibleIn ? 'visible' : 'not-visible') as 'visible' | 'not-visible',
-      firstShownIn: visibleIn?.model || 'None',
+      status: (isVisible ? 'visible' : 'not-visible') as 'visible' | 'not-visible',
+      firstShownIn,
       dateChecked: today
     });
   }
