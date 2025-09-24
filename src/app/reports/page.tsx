@@ -144,17 +144,74 @@ export default function ReportsPage() {
                   <h3 className="text-lg font-medium text-white">Recommended Actions</h3>
                 </div>
                 <div className="space-y-3">
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
-                    <span className="text-sm text-gray-400">Improve visibility in underperforming models</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-                    <span className="text-sm text-gray-400">Create content targeting high-value prompts</span>
-                  </div>
+                  {searchData.models?.chatgpt?.score < 70 && (
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-red-500 rounded-full mr-3"></div>
+                      <span className="text-sm text-gray-400">Improve ChatGPT visibility (current: {searchData.models?.chatgpt?.score}%)</span>
+                    </div>
+                  )}
+                  {searchData.models?.claude?.score < 70 && (
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-red-500 rounded-full mr-3"></div>
+                      <span className="text-sm text-gray-400">Improve Gemini visibility (current: {searchData.models?.claude?.score}%)</span>
+                    </div>
+                  )}
+                  {searchData.prompts?.length > 0 && (
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                      <span className="text-sm text-gray-400">Focus on {searchData.prompts.filter((p: any) => p.status === 'visible').length} visible prompts</span>
+                    </div>
+                  )}
+                  {searchData.competitors?.length > 0 && (
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
+                      <span className="text-sm text-gray-400">Monitor {searchData.competitors.length} competitors regularly</span>
+                    </div>
+                  )}
                   <div className="flex items-center">
                     <div className="w-2 h-2 bg-yellow-500 rounded-full mr-3"></div>
-                    <span className="text-sm text-gray-400">Monitor competitor performance regularly</span>
+                    <span className="text-sm text-gray-400">Create content targeting high-value prompts</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Detailed Analysis */}
+            <div className="bg-gray-800 p-6 rounded-lg shadow">
+              <h3 className="text-lg font-medium text-white mb-4">Detailed Analysis</h3>
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                <div>
+                  <h4 className="text-md font-medium text-white mb-3">Visibility Breakdown</h4>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-400">ChatGPT Score</span>
+                      <span className="text-sm text-white">{searchData.models?.chatgpt?.score || 0}%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-400">Gemini Score</span>
+                      <span className="text-sm text-white">{searchData.models?.claude?.score || 0}%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-400">Overall Score</span>
+                      <span className="text-sm text-white font-medium">{searchData.overallScore || 0}%</span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="text-md font-medium text-white mb-3">Performance Metrics</h4>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-400">Total Prompts Tested</span>
+                      <span className="text-sm text-white">{searchData.prompts?.length || 0}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-400">Visible Prompts</span>
+                      <span className="text-sm text-white">{searchData.prompts?.filter((p: any) => p.status === 'visible').length || 0}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-400">Competitors Tracked</span>
+                      <span className="text-sm text-white">{searchData.competitors?.length || 0}</span>
+                    </div>
                   </div>
                 </div>
               </div>
