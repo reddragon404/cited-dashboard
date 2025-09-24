@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCurrentUser, login } from '@/lib/authClient';
+import Logo from '@/components/Logo';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -39,9 +40,9 @@ export default function LoginPage() {
     <main className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
       <div className="text-center max-w-md mx-auto px-6">
         <div className="mb-8">
-          <h1 className="text-5xl font-bold mb-4 text-white">
-            Cited
-          </h1>
+          <div className="flex justify-center mb-6">
+            <Logo size="lg" />
+          </div>
           <p className="text-xl text-gray-300 mb-2">Be the brand AI chooses</p>
         </div>
         

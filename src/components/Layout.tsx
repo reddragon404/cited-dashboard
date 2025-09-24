@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { getCurrentUser, logout, searchDomain } from '@/lib/authClient';
 import Link from 'next/link';
+import Logo from './Logo';
 import { 
   BarChart3, 
   MessageSquare, 
@@ -86,7 +87,7 @@ export default function Layout({ children }: LayoutProps) {
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
         <div className="fixed inset-y-0 left-0 flex w-64 flex-col bg-slate-900">
           <div className="flex h-16 items-center justify-between px-4">
-            <h1 className="text-xl font-bold text-white">Cited</h1>
+            <Logo size="sm" />
             <button
               onClick={() => setSidebarOpen(false)}
               className="text-gray-400 hover:text-white"
@@ -120,7 +121,7 @@ export default function Layout({ children }: LayoutProps) {
       <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
         <div className="flex flex-col flex-grow bg-slate-900 pt-5">
           <div className="flex items-center flex-shrink-0 px-4">
-            <h1 className="text-xl font-bold text-white">Cited</h1>
+            <Logo size="sm" />
           </div>
           <div className="mt-5 flex-grow flex flex-col">
             <nav className="flex-1 space-y-1 px-2">
