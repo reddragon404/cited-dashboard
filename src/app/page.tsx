@@ -36,16 +36,13 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white">
+    <main className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
       <div className="text-center max-w-md mx-auto px-6">
         <div className="mb-8">
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
+          <h1 className="text-5xl font-bold mb-4 text-white">
             Cited
           </h1>
-          <p className="text-xl text-gray-300 mb-2">Get seen by AI. Get chosen.</p>
-          <p className="text-sm text-gray-400">
-            Track your AI visibility across ChatGPT, Claude, and Perplexity
-          </p>
+          <p className="text-xl text-gray-300 mb-2">Be the brand AI chooses</p>
         </div>
         
         <form onSubmit={handleLogin} className="space-y-4">
@@ -88,10 +85,14 @@ export default function LoginPage() {
           
           <div className="text-xs text-gray-500 mt-6">
             <div className="mb-2">Demo credentials:</div>
-            <div>Email: admin@cited.com</div>
+            <div>Email: go@getcited.app</div>
             <div>Password: password</div>
           </div>
         </form>
+        
+        <footer className="mt-12 text-center">
+          <p className="text-xs text-gray-500">Cited App — All Rights Reserved 2025 — go@getcited.app</p>
+        </footer>
       </div>
     </main>
   );

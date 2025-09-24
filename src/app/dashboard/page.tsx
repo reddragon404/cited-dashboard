@@ -118,15 +118,6 @@ export default function Dashboard() {
                   trendValue={3}
                 />
               </div>
-              <div className="col-span-1 sm:col-span-2 lg:col-span-1">
-                <ScoreCard
-                  score={searchData.models?.perplexity?.score || 0}
-                  title="Perplexity Visibility"
-                  subtitle="Last 30 days"
-                  trend="down"
-                  trendValue={15}
-                />
-              </div>
             </div>
 
         {/* Main Content Grid */}
@@ -144,8 +135,7 @@ export default function Dashboard() {
             <ModelVisibility 
               models={[
                 { name: 'ChatGPT', visible: searchData.models.chatgpt.visible, score: searchData.models.chatgpt.score },
-                { name: 'Gemini', visible: searchData.models.claude.visible, score: searchData.models.claude.score },
-                { name: 'Perplexity', visible: searchData.models.perplexity.visible, score: searchData.models.perplexity.score }
+                { name: 'Gemini', visible: searchData.models.claude.visible, score: searchData.models.claude.score }
               ]} 
             />
           </div>

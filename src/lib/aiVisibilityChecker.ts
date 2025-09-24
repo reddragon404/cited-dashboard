@@ -78,47 +78,41 @@ interface DomainAnalysis {
 
 export async function checkAIVisibility(domain: string): Promise<DomainAnalysis> {
   console.log(`Starting AI visibility check for ${domain}`);
+  console.log('OpenAI API Key exists:', !!process.env.OPENAI_API_KEY);
+  console.log('Google API Key exists:', !!process.env.GOOGLE_API_KEY);
   
-  // Check visibility across all models
+  // Check visibility across ChatGPT and Gemini only
   const [chatgptResult, geminiResult] = await Promise.all([
     checkChatGPTVisibility(domain),
     checkGeminiVisibility(domain)
   ]);
   
-  // Skip Perplexity for now
-  const perplexityResult = {
-    model: 'Perplexity',
-    visible: false,
-    score: 0,
-    mentions: 0,
-    context: [],
-    response: 'Skipped'
-  };
+  console.log('ChatGPT Result:', chatgptResult);
+  console.log('Gemini Result:', geminiResult);
 
-  // Calculate overall score
+  // Calculate overall score based on only 2 models
   const overallScore = Math.round(
-    (chatgptResult.score + geminiResult.score + perplexityResult.score) / 3
+    (chatgptResult.score + geminiResult.score) / 2
   );
 
   // Generate trends (mock for now, could be historical data)
   const trends = generateTrends(overallScore);
 
   // Generate prompts based on actual results
-  const prompts = generatePrompts(domain, [chatgptResult, geminiResult, perplexityResult]);
+  const prompts = generatePrompts(domain, [chatgptResult, geminiResult]);
 
-  // Generate competitors (mock for now)
+  // Generate competitors based on domain analysis
   const competitors = generateCompetitors(domain, overallScore);
 
   // Generate highlights
-  const highlights = generateHighlights(chatgptResult, geminiResult, perplexityResult);
+  const highlights = generateHighlights(chatgptResult, geminiResult);
 
   return {
     domain,
     overallScore,
     models: {
       chatgpt: chatgptResult,
-      claude: geminiResult, // Using Gemini instead of Claude
-      perplexity: perplexityResult
+      claude: geminiResult // Using Gemini instead of Claude
     },
     trends,
     prompts,
@@ -129,13 +123,28 @@ export async function checkAIVisibility(domain: string): Promise<DomainAnalysis>
 
 async function checkChatGPTVisibility(domain: string): Promise<VisibilityResult> {
   try {
+    if (!process.env.OPENAI_API_KEY) {
+      console.error('OpenAI API key not found');
+      return {
+        model: 'ChatGPT',
+        visible: false,
+        score: 0,
+        mentions: 0,
+        context: [],
+        response: 'API key not configured'
+      };
+    }
+
     const testPrompts = generateTestPrompts(domain);
     let totalMentions = 0;
     let visibleResponses = 0;
     const contexts: string[] = [];
 
+    console.log(`Testing ${testPrompts.length} prompts for domain: ${domain}`);
+
     for (const testPrompt of testPrompts.slice(0, 3)) { // Test with 3 prompts
       try {
+        console.log(`Testing prompt: ${testPrompt}`);
         const response = await openai.chat.completions.create({
           model: 'gpt-4',
           messages: [{ role: 'user', content: testPrompt }],
@@ -144,7 +153,9 @@ async function checkChatGPTVisibility(domain: string): Promise<VisibilityResult>
         });
 
         const responseText = response.choices[0]?.message?.content || '';
+        console.log(`Response: ${responseText.substring(0, 100)}...`);
         const mentions = countDomainMentions(responseText, domain);
+        console.log(`Mentions found: ${mentions}`);
         
         if (mentions > 0) {
           totalMentions += mentions;
@@ -181,6 +192,18 @@ async function checkChatGPTVisibility(domain: string): Promise<VisibilityResult>
 
 async function checkGeminiVisibility(domain: string): Promise<VisibilityResult> {
   try {
+    if (!process.env.GOOGLE_API_KEY) {
+      console.error('Google API key not found');
+      return {
+        model: 'Gemini',
+        visible: false,
+        score: 0,
+        mentions: 0,
+        context: [],
+        response: 'API key not configured'
+      };
+    }
+
     const testPrompts = generateTestPrompts(domain);
     let totalMentions = 0;
     let visibleResponses = 0;
@@ -188,12 +211,17 @@ async function checkGeminiVisibility(domain: string): Promise<VisibilityResult> 
 
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
+    console.log(`Testing ${testPrompts.length} prompts for domain: ${domain} with Gemini`);
+
     for (const testPrompt of testPrompts.slice(0, 3)) {
       try {
+        console.log(`Testing Gemini prompt: ${testPrompt}`);
         const result = await model.generateContent(testPrompt);
         const response = await result.response;
         const responseText = response.text();
+        console.log(`Gemini Response: ${responseText.substring(0, 100)}...`);
         const mentions = countDomainMentions(responseText, domain);
+        console.log(`Gemini Mentions found: ${mentions}`);
         
         if (mentions > 0) {
           totalMentions += mentions;
@@ -392,7 +420,7 @@ function generateCompetitors(domain: string, score: number): Array<{
   return competitors;
 }
 
-function generateHighlights(chatgpt: VisibilityResult, claude: VisibilityResult, perplexity: VisibilityResult): Array<{
+function generateHighlights(chatgpt: VisibilityResult, claude: VisibilityResult): Array<{
   type: 'visibility-drop' | 'new-competitor' | 'missed-prompt';
   title: string;
   description: string;
@@ -405,12 +433,12 @@ function generateHighlights(chatgpt: VisibilityResult, claude: VisibilityResult,
     value: string;
   }> = [];
   
-  if (perplexity.score < 50) {
+  if (claude.score < 50) {
     highlights.push({
       type: 'visibility-drop' as const,
       title: 'Visibility Drop',
-      description: 'Your visibility in Perplexity is low',
-      value: `${perplexity.score}%`
+      description: 'Your visibility in Gemini is low',
+      value: `${claude.score}%`
     });
   }
   
@@ -418,13 +446,13 @@ function generateHighlights(chatgpt: VisibilityResult, claude: VisibilityResult,
     highlights.push({
       type: 'new-competitor' as const,
       title: 'Strong Performance',
-      description: 'You are visible in both ChatGPT and Claude',
-      value: '2/3 models'
+      description: 'You are visible in both ChatGPT and Gemini',
+      value: '2/2 models'
     });
   }
   
-  const totalMentions = chatgpt.mentions + claude.mentions + perplexity.mentions;
-  if (totalMentions < 3) {
+  const totalMentions = chatgpt.mentions + claude.mentions;
+  if (totalMentions < 2) {
     highlights.push({
       type: 'missed-prompt' as const,
       title: 'Missed Opportunities',

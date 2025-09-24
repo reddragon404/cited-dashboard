@@ -117,9 +117,6 @@ export default function CompetitorsPage() {
                         Gemini
                       </th>
                       <th className="px-6 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Perplexity
-                      </th>
-                      <th className="px-6 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">
                         Total Citations
                       </th>
                       <th className="px-6 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">
@@ -129,7 +126,7 @@ export default function CompetitorsPage() {
                   </thead>
                   <tbody className="bg-gray-800 divide-y divide-gray-700">
                     {searchData.competitors?.map((competitor: any, index: number) => {
-                      const totalCitations = (competitor.chatgpt?.frequency || 0) + (competitor.claude?.frequency || 0) + (competitor.perplexity?.frequency || 0);
+                      const totalCitations = (competitor.chatgpt?.frequency || 0) + (competitor.claude?.frequency || 0);
                       return (
                         <tr key={index} className="hover:bg-gray-700">
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
@@ -149,14 +146,6 @@ export default function CompetitorsPage() {
                                 {competitor.claude?.visible ? '✓' : '✗'}
                               </span>
                               <span className="text-xs text-gray-400">{competitor.claude?.frequency || 0}</span>
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-center">
-                            <div className="flex flex-col items-center">
-                              <span className={`text-sm font-medium ${competitor.perplexity?.visible ? 'text-green-500' : 'text-red-500'}`}>
-                                {competitor.perplexity?.visible ? '✓' : '✗'}
-                              </span>
-                              <span className="text-xs text-gray-400">{competitor.perplexity?.frequency || 0}</span>
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-white">

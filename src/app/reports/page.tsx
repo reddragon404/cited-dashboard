@@ -94,10 +94,6 @@ export default function ReportsPage() {
                     <span className="text-sm text-gray-400">Gemini Visibility</span>
                     <span className="text-lg font-semibold text-blue-500">{searchData.models?.claude?.score || 0}%</span>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-400">Perplexity Visibility</span>
-                    <span className="text-lg font-semibold text-purple-500">{searchData.models?.perplexity?.score || 0}%</span>
-                  </div>
                 </div>
               </div>
 
@@ -134,9 +130,6 @@ export default function ReportsPage() {
                         </span>
                         <span className={`text-xs px-2 py-1 rounded ${competitor.claude?.visible ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
                           Gemini
-                        </span>
-                        <span className={`text-xs px-2 py-1 rounded ${competitor.perplexity?.visible ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
-                          Perplexity
                         </span>
                       </div>
                     </div>
