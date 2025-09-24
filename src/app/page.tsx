@@ -37,7 +37,7 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
+    <main className="flex items-center justify-center min-h-screen bg-gray-900 text-white" data-version="2.0">
       <div className="text-center max-w-md mx-auto px-6">
         <div className="mb-8">
           <div className="flex justify-center mb-6">
