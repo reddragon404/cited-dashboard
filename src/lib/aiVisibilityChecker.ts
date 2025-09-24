@@ -408,14 +408,68 @@ function generateCompetitors(domain: string, score: number): Array<{
   score: number;
   change: 'up' | 'down' | 'neutral';
   changeValue: number;
+  chatgpt?: { visible: boolean; frequency: number };
+  claude?: { visible: boolean; frequency: number };
 }> {
+  // Generate realistic competitors based on domain type
   const competitors = [
-    { rank: 1, brand: domain, score, change: 'up' as const, changeValue: 12 },
-    { rank: 2, brand: 'Competitor A', score: score - 10, change: 'down' as const, changeValue: 5 },
-    { rank: 3, brand: 'Competitor B', score: score - 15, change: 'up' as const, changeValue: 3 },
-    { rank: 4, brand: 'Competitor C', score: score - 20, change: 'neutral' as const, changeValue: 0 },
-    { rank: 5, brand: 'Competitor D', score: score - 25, change: 'down' as const, changeValue: 8 }
+    { 
+      rank: 1, 
+      brand: domain, 
+      score, 
+      change: 'up' as const, 
+      changeValue: 12,
+      chatgpt: { visible: true, frequency: Math.floor(Math.random() * 5) + 1 },
+      claude: { visible: true, frequency: Math.floor(Math.random() * 5) + 1 }
+    }
   ];
+
+  // Add realistic competitors based on domain category
+  const domainLower = domain.toLowerCase();
+  let competitorDomains: string[] = [];
+
+  if (domainLower.includes('payment') || domainLower.includes('stripe') || domainLower.includes('paypal')) {
+    competitorDomains = ['stripe.com', 'paypal.com', 'square.com', 'razorpay.com'];
+  } else if (domainLower.includes('ai') || domainLower.includes('openai') || domainLower.includes('anthropic')) {
+    competitorDomains = ['openai.com', 'anthropic.com', 'huggingface.co', 'cohere.com'];
+  } else if (domainLower.includes('cloud') || domainLower.includes('aws') || domainLower.includes('azure')) {
+    competitorDomains = ['aws.amazon.com', 'azure.microsoft.com', 'cloud.google.com', 'digitalocean.com'];
+  } else if (domainLower.includes('social') || domainLower.includes('twitter') || domainLower.includes('facebook')) {
+    competitorDomains = ['twitter.com', 'facebook.com', 'linkedin.com', 'instagram.com'];
+  } else if (domainLower.includes('ecommerce') || domainLower.includes('shopify') || domainLower.includes('amazon')) {
+    competitorDomains = ['shopify.com', 'amazon.com', 'woocommerce.com', 'bigcommerce.com'];
+  } else if (domainLower.includes('analytics') || domainLower.includes('google') || domainLower.includes('mixpanel')) {
+    competitorDomains = ['analytics.google.com', 'mixpanel.com', 'amplitude.com', 'hotjar.com'];
+  } else {
+    // Generic competitors for unknown domains
+    competitorDomains = ['competitor1.com', 'competitor2.com', 'competitor3.com', 'competitor4.com'];
+  }
+
+  // Remove the searched domain from competitors if it exists
+  const filteredCompetitors = competitorDomains.filter(comp => comp !== domain);
+
+  // Generate competitor data
+  for (let i = 0; i < Math.min(4, filteredCompetitors.length); i++) {
+    const competitorScore = Math.max(0, score - (Math.random() * 30 + 5));
+    const change = Math.random() > 0.5 ? 'up' : 'down';
+    const changeValue = Math.floor(Math.random() * 15) + 1;
+    
+    competitors.push({
+      rank: i + 2,
+      brand: filteredCompetitors[i],
+      score: Math.round(competitorScore),
+      change: change as 'up' | 'down' | 'neutral',
+      changeValue,
+      chatgpt: { 
+        visible: Math.random() > 0.3, 
+        frequency: Math.floor(Math.random() * 4) 
+      },
+      claude: { 
+        visible: Math.random() > 0.4, 
+        frequency: Math.floor(Math.random() * 4) 
+      }
+    });
+  }
   
   return competitors;
 }
