@@ -52,7 +52,6 @@ interface DomainAnalysis {
   models: {
     chatgpt: VisibilityResult;
     claude: VisibilityResult;
-    perplexity: VisibilityResult;
   };
   trends: Array<{ month: string; score: number }>;
   prompts: Array<{
@@ -256,69 +255,6 @@ async function checkGeminiVisibility(domain: string): Promise<VisibilityResult> 
   }
 }
 
-async function checkPerplexityVisibility(domain: string): Promise<VisibilityResult> {
-  try {
-    const testPrompts = generateTestPrompts(domain);
-    let totalMentions = 0;
-    let visibleResponses = 0;
-    const contexts: string[] = [];
-
-    for (const testPrompt of testPrompts.slice(0, 3)) {
-      try {
-        const response = await fetch('https://api.perplexity.ai/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${process.env.PERPLEXITY_API_KEY}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            model: 'llama-3.1-sonar-small-128k-online',
-            messages: [{ role: 'user', content: testPrompt }],
-            max_tokens: 500,
-            temperature: 0.7
-          })
-        });
-
-        if (!response.ok) {
-          throw new Error(`Perplexity API error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        const responseText = data.choices[0]?.message?.content || '';
-        const mentions = countDomainMentions(responseText, domain);
-        
-        if (mentions > 0) {
-          totalMentions += mentions;
-          visibleResponses++;
-          contexts.push(responseText.substring(0, 200) + '...');
-        }
-      } catch (error) {
-        console.error('Perplexity API error:', error);
-      }
-    }
-
-    const score = visibleResponses > 0 ? Math.min(100, (visibleResponses / 3) * 100 + totalMentions * 10) : 0;
-    
-    return {
-      model: 'Perplexity',
-      visible: visibleResponses > 0,
-      score: Math.round(score),
-      mentions: totalMentions,
-      context: contexts,
-      response: visibleResponses > 0 ? 'Domain found in responses' : 'Domain not found'
-    };
-  } catch (error) {
-    console.error('Perplexity visibility check failed:', error);
-    return {
-      model: 'Perplexity',
-      visible: false,
-      score: 0,
-      mentions: 0,
-      context: [],
-      response: 'API error'
-    };
-  }
-}
 
 function generateTestPrompts(domain: string): string[] {
   const prompts: string[] = [];
@@ -425,7 +361,7 @@ function generateCompetitors(domain: string, score: number): Array<{
       rank: 1, 
       brand: domain, 
       score, 
-      change: 'up' as const, 
+      change: 'up' as 'up' | 'down' | 'neutral', 
       changeValue: 12,
       chatgpt: { visible: true, frequency: Math.floor(Math.random() * 5) + 1 },
       claude: { visible: true, frequency: Math.floor(Math.random() * 5) + 1 }
@@ -459,14 +395,14 @@ function generateCompetitors(domain: string, score: number): Array<{
   // Generate competitor data
   for (let i = 0; i < Math.min(4, filteredCompetitors.length); i++) {
     const competitorScore = Math.max(0, score - (Math.random() * 30 + 5));
-    const change = Math.random() > 0.5 ? 'up' : 'down';
     const changeValue = Math.floor(Math.random() * 15) + 1;
+    const changeType = Math.random() > 0.5 ? 'up' : 'down';
     
     competitors.push({
       rank: i + 2,
       brand: filteredCompetitors[i],
       score: Math.round(competitorScore),
-      change: change as 'up' | 'down' | 'neutral',
+      change: changeType as 'up' | 'down' | 'neutral',
       changeValue,
       chatgpt: { 
         visible: Math.random() > 0.3, 
