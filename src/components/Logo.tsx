@@ -12,7 +12,7 @@ export default function Logo({ className = '', size = 'md' }: LogoProps) {
 
   return (
     <div className={`flex items-center ${className}`}>
-      <div className={`${sizeClasses[size]} bg-gradient-to-br from-green-500 to-blue-600 rounded-lg flex items-center justify-center`}>
+      <div className={`${sizeClasses[size]} bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center shadow-lg`}>
         <span className="text-white font-bold text-sm">C</span>
       </div>
       <span className="ml-2 text-white font-bold text-xl">Cited</span>

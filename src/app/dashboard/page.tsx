@@ -53,20 +53,20 @@ export default function Dashboard() {
 
   return (
     <Layout>
-      <div className="space-y-6">
+      <div className="space-y-8 min-h-screen bg-gray-900">
         {/* Header */}
-        <div>
-          <h1 className="text-2xl font-bold text-white">
+        <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6">
+          <h1 className="text-3xl font-bold text-white">
             {searchedDomain ? `${searchedDomain} - AI Visibility Report` : 'AI Visibility Dashboard'}
           </h1>
-          <p className="mt-1 text-sm text-gray-400">
+          <p className="mt-2 text-gray-300">
             {searchedDomain 
               ? `AI visibility analysis for ${searchedDomain}`
               : 'Search for a domain to see AI visibility analysis'
             }
           </p>
           {searchData && (
-            <div className="mt-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-500 text-white">
+            <div className="mt-3 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-600 text-white">
               ✓ Real AI Data
             </div>
           )}
@@ -74,13 +74,32 @@ export default function Dashboard() {
 
         {/* Show search prompt if no data */}
         {!searchData && (
-          <div className="bg-gray-800 rounded-lg p-8 text-center">
-            <h2 className="text-xl font-semibold text-white mb-4">No Search Data Available</h2>
-            <p className="text-gray-400 mb-6">Use the search bar above to analyze a domain's AI visibility</p>
-            <div className="text-sm text-gray-500">
-              <p>• Enter any domain (e.g., stripe.com, openai.com)</p>
-              <p>• Get real AI visibility scores from ChatGPT, Gemini, and Perplexity</p>
-              <p>• View detailed analysis and competitor insights</p>
+          <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg p-8 text-center border border-gray-700">
+            <div className="mb-6">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                <span className="text-white font-bold text-2xl">C</span>
+              </div>
+              <h2 className="text-2xl font-bold text-white mb-2">Welcome to Cited</h2>
+              <p className="text-gray-300">AI Visibility Analysis Platform</p>
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-4">Ready to analyze your AI visibility?</h3>
+            <p className="text-gray-400 mb-6">Use the search bar above to analyze any domain's AI visibility across major AI models</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-300">
+              <div className="bg-gray-700/50 rounded-lg p-4 border border-gray-600">
+                <div className="font-semibold text-blue-400 mb-2">🔍 Real AI Testing</div>
+                <p>Test actual ChatGPT & Gemini responses</p>
+              </div>
+              <div className="bg-gray-700/50 rounded-lg p-4 border border-gray-600">
+                <div className="font-semibold text-purple-400 mb-2">📊 Detailed Analytics</div>
+                <p>Get comprehensive visibility reports</p>
+              </div>
+              <div className="bg-gray-700/50 rounded-lg p-4 border border-gray-600">
+                <div className="font-semibold text-indigo-400 mb-2">🏆 Competitor Insights</div>
+                <p>Compare against industry leaders</p>
+              </div>
+            </div>
+            <div className="mt-6 text-xs text-gray-500">
+              <p>Try searching for: stripe.com, notion.com, hltv.org, or any domain you're curious about</p>
             </div>
           </div>
         )}
@@ -96,26 +115,20 @@ export default function Dashboard() {
                   score={searchData.overallScore}
                   title="AI Visibility Score"
                   subtitle="Out of 100"
-                  trend="up"
-                  trendValue={12}
                 />
               </div>
               <div className="col-span-1 sm:col-span-2 lg:col-span-1">
                 <ScoreCard
                   score={searchData.models?.chatgpt?.score || 0}
                   title="ChatGPT Visibility"
-                  subtitle="Last 30 days"
-                  trend="up"
-                  trendValue={8}
+                  subtitle="Current Score"
                 />
               </div>
               <div className="col-span-1 sm:col-span-2 lg:col-span-1">
                 <ScoreCard
                   score={searchData.models?.claude?.score || 0}
                   title="Gemini Visibility"
-                  subtitle="Last 30 days"
-                  trend="down"
-                  trendValue={3}
+                  subtitle="Current Score"
                 />
               </div>
             </div>

@@ -32,24 +32,29 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate domain format
+    // Clean and validate domain format
+    const cleanDomain = domain.trim().toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '');
     const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.([a-zA-Z]{2,}|[a-zA-Z]{2,}\.[a-zA-Z]{2,})$/;
-    if (!domainRegex.test(domain)) {
+    
+    if (!domainRegex.test(cleanDomain)) {
       return NextResponse.json(
-        { error: 'Invalid domain format' },
+        { error: 'Invalid domain format. Please enter a valid domain like "example.com"' },
         { status: 400 }
       );
     }
 
     // Check AI visibility using real APIs
-    console.log(`Starting real AI visibility check for ${domain}`);
-    const visibilityData = await checkAIVisibility(domain);
+    console.log(`Starting real AI visibility check for ${cleanDomain}`);
+    const visibilityData = await checkAIVisibility(cleanDomain);
 
     return NextResponse.json(visibilityData, { status: 200 });
   } catch (error) {
     console.error('Search error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { 
+        error: 'Search failed. Please check your API keys and try again.',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }

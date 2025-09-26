@@ -60,8 +60,15 @@ export default function Layout({ children }: LayoutProps) {
         // Store the search results in localStorage for the dashboard to use
         localStorage.setItem('searchResults', JSON.stringify(data));
         localStorage.setItem('searchedDomain', domain.trim());
+        
+        // Clear the search input
+        setDomain('');
+        
         // Navigate to dashboard to show results
         router.push('/dashboard');
+        
+        // Force a page refresh to ensure the dashboard updates
+        window.location.reload();
       } else {
         setSearchError(error || 'Search failed. Please check your API keys in .env.local');
       }
@@ -85,7 +92,7 @@ export default function Layout({ children }: LayoutProps) {
       {/* Mobile sidebar */}
       <div className={`fixed inset-0 z-50 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
-        <div className="fixed inset-y-0 left-0 flex w-64 flex-col bg-slate-900">
+        <div className="fixed inset-y-0 left-0 flex w-64 flex-col bg-gray-800 border-r border-gray-700">
           <div className="flex h-16 items-center justify-between px-4">
             <Logo size="sm" />
             <button
@@ -104,7 +111,7 @@ export default function Layout({ children }: LayoutProps) {
                   href={item.href}
                   className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md ${
                     isActive
-                      ? 'bg-green-600 text-white'
+                      ? 'bg-blue-600 text-white'
                       : 'text-gray-300 hover:bg-gray-700 hover:text-white'
                   }`}
                 >
@@ -119,7 +126,7 @@ export default function Layout({ children }: LayoutProps) {
 
       {/* Desktop sidebar */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
-        <div className="flex flex-col flex-grow bg-slate-900 pt-5">
+        <div className="flex flex-col flex-grow bg-gray-800 border-r border-gray-700 pt-5">
           <div className="flex items-center flex-shrink-0 px-4">
             <Logo size="sm" />
           </div>
@@ -133,7 +140,7 @@ export default function Layout({ children }: LayoutProps) {
                     href={item.href}
                     className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md ${
                       isActive
-                        ? 'bg-green-600 text-white'
+                        ? 'bg-blue-600 text-white'
                         : 'text-gray-300 hover:bg-gray-700 hover:text-white'
                     }`}
                   >
@@ -150,7 +157,7 @@ export default function Layout({ children }: LayoutProps) {
       {/* Main content */}
       <div className="lg:pl-64">
         {/* Top navigation */}
-        <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-700 bg-gray-800 px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
+        <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-700 bg-gray-800/95 backdrop-blur-sm px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
           <button
             type="button"
             className="-m-2.5 p-2.5 text-gray-300 lg:hidden"
@@ -172,11 +179,11 @@ export default function Layout({ children }: LayoutProps) {
                   </div>
                   <input
                     type="text"
-                    placeholder="Enter domain (e.g., example.com)"
+                    placeholder="Enter domain (e.g., hltv.org, stripe.com)"
                     value={domain}
                     onChange={(e) => setDomain(e.target.value)}
                     disabled={searching}
-                    className="block w-full rounded-md border-0 py-1.5 pl-10 pr-3 text-white bg-gray-700 ring-1 ring-inset ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6 disabled:opacity-50"
+                    className="block w-full rounded-md border-0 py-2 pl-10 pr-3 text-white bg-gray-700/50 ring-1 ring-inset ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 disabled:opacity-50"
                   />
                 </div>
                 {searching && (
