@@ -19,11 +19,11 @@ const getDomainSpecificPrompts = (domain: string): string[] => {
   
   if (domainLower.includes('hltv') || domainLower.includes('cs') || domainLower.includes('counter-strike')) {
     return [
-      'What is the best CS news coverage website?',
-      'Where can I find Counter-Strike tournament results and news?',
-      'What are the top CS:GO esports news sites?',
-      'Best website for CS2 match results and player stats?',
-      'Where do pro CS players get their news and updates?'
+      'What are the top Counter-Strike esports news websites?',
+      'Where can I find CS:GO tournament results and match schedules?',
+      'What are the best CS2 news and coverage sites?',
+      'Where do pro Counter-Strike players get their news and updates?',
+      'What are the leading CS:GO esports news platforms?'
     ];
   } else if (domainLower.includes('stripe') || domainLower.includes('payment')) {
     return [
@@ -279,7 +279,7 @@ async function checkGeminiVisibility(domain: string): Promise<VisibilityResult> 
     let visibleResponses = 0;
     const contexts: string[] = [];
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
 
     console.log(`Testing ${testPrompts.length} prompts for domain: ${domain} with Gemini`);
 
@@ -335,31 +335,35 @@ function countDomainMentions(text: string, domain: string): number {
   const domainLower = domain.toLowerCase();
   const textLower = text.toLowerCase();
   
-  // Check for various forms of the domain
+  // Create comprehensive domain variations
   const domainVariations = [
     domainLower,
     domainLower.replace('www.', ''),
     domainLower.split('.')[0], // Just the name part (e.g., "hltv" from "hltv.org")
-    domainLower.replace('.com', '').replace('.org', '').replace('.net', ''),
+    domainLower.replace('.com', '').replace('.org', '').replace('.net', '').replace('.io', ''),
     // For HLTV specifically, also check for common variations
-    ...(domainLower.includes('hltv') ? ['hltv', 'hltv.org', 'hltv.org/'] : []),
+    ...(domainLower.includes('hltv') ? ['hltv', 'hltv.org', 'hltv.org/', 'hltv.org'] : []),
     // For other domains, check for common patterns
-    ...(domainLower.includes('stripe') ? ['stripe', 'stripe.com'] : []),
-    ...(domainLower.includes('notion') ? ['notion', 'notion.so'] : []),
-    ...(domainLower.includes('openai') ? ['openai', 'openai.com'] : [])
+    ...(domainLower.includes('stripe') ? ['stripe', 'stripe.com', 'stripe api'] : []),
+    ...(domainLower.includes('notion') ? ['notion', 'notion.so', 'notion app'] : []),
+    ...(domainLower.includes('openai') ? ['openai', 'openai.com', 'openai api', 'gpt'] : []),
+    ...(domainLower.includes('github') ? ['github', 'github.com', 'github.io'] : []),
+    ...(domainLower.includes('vercel') ? ['vercel', 'vercel.com', 'vercel.app'] : [])
   ];
   
   let mentions = 0;
   for (const variation of domainVariations) {
-    if (variation && variation.length > 2) { // Only check meaningful variations
+    if (variation && variation.length > 1) { // Check meaningful variations
       const regex = new RegExp(`\\b${variation.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
       const matches = textLower.match(regex);
       if (matches) {
         mentions += matches.length;
+        console.log(`Found ${matches.length} mentions of "${variation}"`);
       }
     }
   }
   
+  console.log(`Total mentions found for ${domain}: ${mentions}`);
   return mentions;
 }
 
