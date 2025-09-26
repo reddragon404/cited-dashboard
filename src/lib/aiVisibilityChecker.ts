@@ -274,6 +274,8 @@ async function checkGeminiVisibility(domain: string): Promise<VisibilityResult> 
       };
     }
 
+    console.log(`Starting Gemini visibility check for ${domain}`);
+
     const testPrompts = getDomainSpecificPrompts(domain);
     let totalMentions = 0;
     let visibleResponses = 0;
@@ -299,7 +301,8 @@ async function checkGeminiVisibility(domain: string): Promise<VisibilityResult> 
           contexts.push(responseText.substring(0, 200) + '...');
         }
       } catch (error) {
-        console.error('Gemini API error:', error);
+        console.error('Gemini API error for prompt:', testPrompt, error);
+        // Continue with other prompts even if one fails
       }
     }
 
@@ -325,7 +328,7 @@ async function checkGeminiVisibility(domain: string): Promise<VisibilityResult> 
       score: 0,
       mentions: 0,
       context: [],
-      response: 'API error'
+      response: `API error: ${error instanceof Error ? error.message : 'Unknown error'}`
     };
   }
 }

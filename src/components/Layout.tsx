@@ -26,6 +26,8 @@ export default function Layout({ children }: LayoutProps) {
   const [domain, setDomain] = useState('');
   const [searching, setSearching] = useState(false);
   const [searchError, setSearchError] = useState<string>('');
+  const [searchHistory, setSearchHistory] = useState<string[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -39,6 +41,16 @@ export default function Layout({ children }: LayoutProps) {
       }
     };
     getUser();
+
+    // Load search history from localStorage
+    const savedHistory = localStorage.getItem('searchHistory');
+    if (savedHistory) {
+      try {
+        setSearchHistory(JSON.parse(savedHistory));
+      } catch (error) {
+        console.error('Error loading search history:', error);
+      }
+    }
   }, [router]);
 
   const handleLogout = async () => {
@@ -60,6 +72,11 @@ export default function Layout({ children }: LayoutProps) {
         // Store the search results in localStorage for the dashboard to use
         localStorage.setItem('searchResults', JSON.stringify(data));
         localStorage.setItem('searchedDomain', domain.trim());
+        
+        // Add to search history
+        const newHistory = [domain.trim(), ...searchHistory.filter(d => d !== domain.trim())].slice(0, 10);
+        setSearchHistory(newHistory);
+        localStorage.setItem('searchHistory', JSON.stringify(newHistory));
         
         // Clear the search input
         setDomain('');
@@ -182,9 +199,35 @@ export default function Layout({ children }: LayoutProps) {
                     placeholder=""
                     value={domain}
                     onChange={(e) => setDomain(e.target.value)}
+                    onFocus={() => setShowHistory(true)}
+                    onBlur={() => setTimeout(() => setShowHistory(false), 200)}
                     disabled={searching}
                     className="block w-full rounded-md border-0 py-2 pl-10 pr-3 text-white bg-gray-700/50 ring-1 ring-inset ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-500 sm:text-sm sm:leading-6 disabled:opacity-50"
                   />
+                  
+                  {/* Search History Dropdown */}
+                  {showHistory && searchHistory.length > 0 && (
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-600 rounded-md shadow-lg z-50">
+                      <div className="py-1">
+                        <div className="px-3 py-2 text-xs text-gray-400 border-b border-gray-600">
+                          Recent searches
+                        </div>
+                        {searchHistory.map((historyDomain, index) => (
+                          <button
+                            key={index}
+                            type="button"
+                            onClick={() => {
+                              setDomain(historyDomain);
+                              setShowHistory(false);
+                            }}
+                            className="w-full text-left px-3 py-2 text-sm text-white hover:bg-gray-700"
+                          >
+                            {historyDomain}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
                 {searching && (
                   <div className="mt-1 text-sm text-gray-400">
