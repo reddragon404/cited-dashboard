@@ -71,7 +71,7 @@ export default function Highlights({ highlights }: HighlightsProps) {
 
   if (highlights.length === 0) {
     return (
-      <div className="bg-gray-800/50 border border-gray-700 p-6 rounded-lg shadow-lg">
+      <div className="bg-gray-900/50 border border-gray-700 p-6 rounded-lg shadow-lg">
         <h3 className="text-xl font-bold text-white mb-4">AI Visibility Insights</h3>
         <div className="text-center py-8">
           <Target className="h-12 w-12 text-gray-500 mx-auto mb-4" />
@@ -83,7 +83,7 @@ export default function Highlights({ highlights }: HighlightsProps) {
   }
 
   return (
-    <div className="bg-gray-800/50 border border-gray-700 p-6 rounded-lg shadow-lg">
+    <div className="bg-gray-900/50 border border-gray-700 p-6 rounded-lg shadow-lg">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xl font-bold text-white">AI Visibility Insights</h3>
         <div className="text-sm text-gray-400">
@@ -132,14 +132,6 @@ export default function Highlights({ highlights }: HighlightsProps) {
         ))}
       </div>
       
-      {highlights.length > 0 && (
-        <div className="mt-4 p-3 bg-gray-700/30 rounded-lg">
-          <p className="text-xs text-gray-400 text-center">
-            💡 These insights are based on your current AI visibility analysis. 
-            Focus on high-priority items to improve your AI presence.
-          </p>
-        </div>
-      )}
     </div>
   );
 }

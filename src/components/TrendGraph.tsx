@@ -11,7 +11,7 @@ interface TrendGraphProps {
 
 export default function TrendGraph({ data, title }: TrendGraphProps) {
   return (
-    <div className="bg-gray-800 p-6 rounded-lg shadow">
+    <div className="bg-gray-900/50 border border-gray-700 p-6 rounded-lg shadow">
       <h3 className="text-lg font-medium text-white mb-4">{title}</h3>
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">

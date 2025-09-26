@@ -19,7 +19,7 @@ export default function PromptList({ prompts }: PromptListProps) {
   };
 
   return (
-    <div className="bg-gray-800 shadow overflow-hidden sm:rounded-md">
+    <div className="bg-gray-900/50 border border-gray-700 shadow overflow-hidden sm:rounded-md">
       <div className="px-4 py-5 sm:px-6">
         <h3 className="text-lg leading-6 font-medium text-white">
             Top 5 prompts where you&apos;re included

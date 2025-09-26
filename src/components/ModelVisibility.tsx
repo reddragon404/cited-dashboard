@@ -10,7 +10,7 @@ interface ModelVisibilityProps {
 
 export default function ModelVisibility({ models }: ModelVisibilityProps) {
   return (
-    <div className="bg-gray-800 p-6 rounded-lg shadow">
+    <div className="bg-gray-900/50 p-6 rounded-lg shadow border border-gray-700">
       <h3 className="text-lg font-medium text-white mb-4">Models you&apos;re visible in</h3>
       <div className="space-y-4">
         {models.map((model, index) => (

@@ -36,7 +36,7 @@ export default function ScoreCard({ score, title, subtitle, trend, trendValue }:
   };
 
   return (
-    <div className="bg-gray-800/50 border border-gray-700 overflow-hidden shadow-lg rounded-lg">
+    <div className="bg-gray-900/50 border border-gray-700 overflow-hidden shadow-lg rounded-lg">
       <div className="p-6">
         <div className="flex items-center">
           <div className="flex-shrink-0">

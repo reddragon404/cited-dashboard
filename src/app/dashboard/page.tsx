@@ -53,9 +53,26 @@ export default function Dashboard() {
 
   return (
     <Layout>
-      <div className="space-y-8 min-h-screen bg-gray-900">
+      <div className="space-y-8 min-h-screen bg-black">
+        {/* Domain Header */}
+        {searchedDomain && (
+          <div className="bg-gray-900/50 border border-gray-700 rounded-lg p-6">
+            <div className="flex items-center space-x-4">
+              <div className="w-16 h-16 bg-gray-700 rounded-lg flex items-center justify-center">
+                <span className="text-2xl font-bold text-white">
+                  {searchedDomain.charAt(0).toUpperCase()}
+                </span>
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-white">{searchedDomain}</h1>
+                <p className="text-gray-300">AI Visibility Analysis Report</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Header */}
-        <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6">
+        <div className="bg-gray-900/50 border border-gray-700 rounded-lg p-6">
           <h1 className="text-3xl font-bold text-white">
             {searchedDomain ? `${searchedDomain} - AI Visibility Report` : 'AI Visibility Dashboard'}
           </h1>
@@ -65,16 +82,11 @@ export default function Dashboard() {
               : 'Search for a domain to see AI visibility analysis'
             }
           </p>
-          {searchData && (
-            <div className="mt-3 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-600 text-white">
-              ✓ Real AI Data
-            </div>
-          )}
         </div>
 
         {/* Show search prompt if no data */}
         {!searchData && (
-          <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg p-8 text-center border border-gray-700">
+          <div className="bg-gray-900/50 rounded-lg p-8 text-center border border-gray-700">
             <div className="mb-6">
               <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
                 <span className="text-white font-bold text-2xl">C</span>
@@ -85,15 +97,15 @@ export default function Dashboard() {
             <h3 className="text-xl font-semibold text-white mb-4">Ready to analyze your AI visibility?</h3>
             <p className="text-gray-400 mb-6">Use the search bar above to analyze any domain's AI visibility across major AI models</p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-300">
-              <div className="bg-gray-700/50 rounded-lg p-4 border border-gray-600">
-                <div className="font-semibold text-blue-400 mb-2">🔍 Real AI Testing</div>
+              <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-600">
+                <div className="font-semibold text-gray-300 mb-2">🔍 Real AI Testing</div>
                 <p>Test actual ChatGPT & Gemini responses</p>
               </div>
-              <div className="bg-gray-700/50 rounded-lg p-4 border border-gray-600">
+              <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-600">
                 <div className="font-semibold text-purple-400 mb-2">📊 Detailed Analytics</div>
                 <p>Get comprehensive visibility reports</p>
               </div>
-              <div className="bg-gray-700/50 rounded-lg p-4 border border-gray-600">
+              <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-600">
                 <div className="font-semibold text-indigo-400 mb-2">🏆 Competitor Insights</div>
                 <p>Compare against industry leaders</p>
               </div>
